@@ -7,6 +7,8 @@ import {useNavigate} from "react-router-dom"
 import {token} from "../utils/token"
 import {ToastContainer,toast} from "react-toastify"
 import { placeOrder } from '../features/auth/authSlice'
+import { baseUrl } from '../utils/baseURL'
+
 const CheckOut = () => {
 
   const {user,cart,subTotal} = useSelector((state)=>state.auth)
@@ -46,7 +48,7 @@ const CheckOut = () => {
       return;
     }
 
-    const result = await axios.post("http://localhost:8000/api/user/order/checkout",{amount:subTotal+5},{headers:{"Authorization":`Bearer ${token}`}})
+    const result = await axios.post(`${baseUrl}user/order/checkout`,{amount:subTotal+5},{headers:{"Authorization":`Bearer ${token}`}})
 
     if(!result){
       toast.error("Something went wrong")
@@ -71,7 +73,7 @@ const CheckOut = () => {
               razorpaySignature: response.razorpay_signature,
           };
 
-      const result = await axios.post("http://localhost:8000/api/user/order/paymentVerification", data,{headers:{"Authorization":`Bearer ${token}`}});
+      const result = await axios.post(`${baseUrl}user/order/paymentVerification`, data,{headers:{"Authorization":`Bearer ${token}`}});
          
       
 

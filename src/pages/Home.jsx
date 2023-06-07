@@ -23,7 +23,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../features/products/productSlice";
 import {getAllCateg} from "../features/category/categorySlice"
 import {getAllColor} from "../features/color/colorSlice"
-import { getCart } from "../features/auth/authSlice";
 const Home = () => {
 
   const dispatch = useDispatch()

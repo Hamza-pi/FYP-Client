@@ -10,7 +10,7 @@ import Slider from "react-slick";
 import ProductCard from "../components/ProductCard";
 import { addToWishlist, getAProduct } from "../features/products/productSlice";
 import useScroll from "../hooks/useScroll"
-import { addToCart, getCart } from "../features/auth/authSlice";
+import { addToCart } from "../features/auth/authSlice";
 const Product = () => {
 
   useScroll()

@@ -8,12 +8,13 @@ import { getAllProducts } from "../features/products/productSlice";
 import { getAllCateg } from "../features/category/categorySlice";
 import { getAllColor } from "../features/color/colorSlice";
 import {Link } from "react-router-dom";
+import { PropagateLoader } from "react-spinners";
 
 const Store = () => {
   useScroll();
 
   const dispatch = useDispatch()
-  const {products} = useSelector((state)=>state.product)
+  const {products,isLoading} = useSelector((state)=>state.product)
   const {categories} = useSelector((state)=>state.category)
   const {colors} = useSelector((state)=>state.color)
 
@@ -28,8 +29,6 @@ const Store = () => {
 
   useEffect(()=>{
 
-
-
     dispatch(getAllProducts({inStock,outStock,min,max,categ,color,tags}))
 
     dispatch(getAllCateg())
@@ -38,7 +37,16 @@ const Store = () => {
 
   },[dispatch,inStock,outStock,min,max,categ,color,tags])
 
+  const override = {
+    display: "block",
+    margin: "50px 650px",
+    borderColor: "red",
+  };
+if(isLoading){
 
+      return <PropagateLoader color="#fdd333" cssOverride={override} />;
+    
+  }
 
   return (
     <>

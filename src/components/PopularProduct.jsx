@@ -44,7 +44,7 @@ const PopularProduct = ({products}) => {
         <div className="tab-products">
           <Slider {...pp_settings} className="tab-slider">
             {products?.map((item)=>(
-              item.category.title==="Speaker"?
+              item.category.title==="Speakers"?
               <ProductCard key={item?._id} product={item}/>:null
             ))}
           </Slider>

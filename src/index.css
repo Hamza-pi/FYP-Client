@@ -1126,9 +1126,10 @@ opacity: 0;
 }
 .special-product .special-product-image .mainImg{
     width: 88%;
+    margin-top: 10px;
     object-fit: cover;
     object-position: center center;
-    height: 80%;
+    height: 82%;
 }
 .special-product .special-product-image .slider-img{
     object-fit: cover;

@@ -2,19 +2,36 @@ import React, { useEffect } from 'react';
 import {useSelector,useDispatch} from "react-redux"
 import {getOrders} from "../features/auth/authSlice"
 import PageTopBanner from "../components/PageTopBanner";
+import { PropagateLoader } from "react-spinners";
 import { Link } from 'react-router-dom';
+import { ToastContainer,toast } from 'react-toastify';
+
 const Orders = () => {
 
   const dispatch = useDispatch()
-  const {orders} = useSelector(state=>state.auth);
+  const {orders,isError,isLoading} = useSelector(state=>state.auth);
   useEffect(()=>{
     if(orders.length===0){
       dispatch(getOrders())
     }
   },[dispatch,orders.length])
 
+  const override = {
+    display: "block",
+    margin: "100px 0 0 500px",
+    borderColor: "red",
+  };
+  if(isError){
+    toast.error("😫 Something Went Wrong")
+  }
+  else if(isLoading){
+
+      return <PropagateLoader color="#fdd333" cssOverride={override} />;
+  }
+
   return (
     <>
+      <ToastContainer/>
       <PageTopBanner pagename={"Your Orders"} />
       {
         orders.length>0?

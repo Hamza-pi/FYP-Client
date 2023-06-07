@@ -7,6 +7,7 @@ import { getAllProducts } from "../features/products/productSlice";
 import { getAllCateg } from "../features/category/categorySlice";
 import { getAllColor } from "../features/color/colorSlice";
 import {Link,useParams } from "react-router-dom";
+import { PropagateLoader } from "react-spinners";
 
 const Sstore = () => {
   useScroll();
@@ -24,8 +25,18 @@ const Sstore = () => {
 
   },[dispatch,id])
 
-  const {products} = useSelector((state)=>state.product)
+  const {products,isLoading} = useSelector((state)=>state.product)
 
+  const override = {
+    display: "block",
+    margin: "100px 0 0 500px",
+    borderColor: "red",
+  };
+if(isLoading){
+
+      return <PropagateLoader color="#fdd333" cssOverride={override} />;
+    
+  }
 
   return (
     <>

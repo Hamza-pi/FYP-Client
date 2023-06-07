@@ -18,6 +18,7 @@ import { ToastContainer,toast } from "react-toastify";
 import { SampleNextArrow, SamplePrevArrow } from "../components/SampleArrow";
 import SpecialProduct from "../components/SpecialProduct";
 import PopularProduct from "../components/PopularProduct";
+import { PropagateLoader } from "react-spinners";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../features/products/productSlice";
@@ -26,10 +27,9 @@ import {getAllColor} from "../features/color/colorSlice"
 const Home = () => {
 
   const dispatch = useDispatch()
-  const {products,isError}=useSelector((state)=>state.product)
+  const {products,isError,isLoading}=useSelector((state)=>state.product)
   const {categories} = useSelector((state)=>state.category)
   const {colors} = useSelector((state)=>state.color)
-  const {cart} = useSelector((state)=>state.auth)
 
   useEffect(()=>{
     if(products===null){
@@ -61,9 +61,16 @@ const Home = () => {
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
   };
- 
+  const override = {
+    display: "block",
+    margin: "100px 0 0 500px",
+    borderColor: "red",
+  };
   if(isError){
     toast.error("😫 Something Went Wrong")
+  }
+  else if(isLoading){
+      return <PropagateLoader color="#fdd333" cssOverride={override} />;
   }
 
   return (

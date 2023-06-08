@@ -391,19 +391,27 @@ font-weight: 500;
 }
 
 .checkout-items .item .item-image img{
-    width: 70px;
-    height: 70px;
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    margin-right: 20px;
     border: 1px solid rgb(224, 223, 223);
     object-fit: cover;
     object-position:center;
     border: 1px solid #cccaca;
     border-radius:10px ;
 }
+.checkout-items .item .item-title span{
+    display: flex;
+    align-items: center;
+    justify-content:flex-start;
+}
 .checkout-items .item .item-title p{
     font-size: 14px;
     font-weight: 400;
     color: #666;
     text-align: left;
+    margin-left: 10px;
 }
 .checkout-items .item .item-total p{
     text-align: center;

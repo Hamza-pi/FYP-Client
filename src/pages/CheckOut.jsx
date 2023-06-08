@@ -56,6 +56,7 @@ const CheckOut = () => {
     }
 
     const {amount,currency,id} = result.data
+    console.log(result.data)
 
     const options = {
       key: "rzp_test_UqgHf2WJ8UtlZ8", // Enter the Key ID generated from the Dashboard
@@ -75,7 +76,7 @@ const CheckOut = () => {
 
       const result = await axios.post(`${baseUrl}user/order/paymentVerification`, data,{headers:{"Authorization":`Bearer ${token}`}});
          
-      
+      console.log(result.data)
 
       dispatch(placeOrder({
         orderItems,
@@ -87,10 +88,21 @@ const CheckOut = () => {
         totalPrice:subTotal+5,
         totalPriceAfterDiscount:subTotal+5
       }))
+
+      console.log({
+        orderItems,
+        shippingInfo:values,
+        paymentInfo:{
+          razorpayOrderId:result.data.razorpayOrderId,
+          razorpayPaymentId:result.data.razorpayPaymentId
+        },
+        totalPrice:subTotal+5,
+        totalPriceAfterDiscount:subTotal+5
+      })
       
       setTimeout(()=>{
         navigate("/orders")
-      },2000)
+      },3000)
 
       },
       prefill: {
@@ -119,7 +131,7 @@ const CheckOut = () => {
       address:"",
       city:"",
       province:"",
-      pinCode:0,
+      pinCode:"",
     },
     validationSchema:Yup.object({
       firstName:Yup.string().required("First Name is Required"),
@@ -216,7 +228,7 @@ const CheckOut = () => {
                 </div>
                 <div className='item-title'>
                   <p>{item.productId.title}</p>
-                  <span>Color:<p style={{backgroundColor:`${item.color.value}`}}></p></span>
+                  <span>Color:<p style={{backgroundColor:`${item.color.value}`,width:"30px",height:"30px",borderRadius:"50%"}}></p></span>
                 </div>
                 <div className='item-total'>
                   <p>${item.total}</p>

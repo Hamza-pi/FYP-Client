@@ -127,7 +127,12 @@ const Product = () => {
                   </>
                 }
               </span>
+             {
+              aproduct?.qty>qty?
               <button className="slide-btn" onClick={()=>alreadyAdded?navigate("/cart"):dispatch(addToCart({productId:aproduct?._id,qty:qty,color:aproduct?.color,price:aproduct?.price}))}>{alreadyAdded?"Go To Cart":"Add To Cart"}</button>
+              :
+              <button className="slide-btn">Out of Stock</button>
+             }
               <span className="wishlist">
                 <div onClick={()=>dispatch(addToWishlist(aproduct?._id))}>
                   <img src={wishlist?"/images/wish-black.svg":"/images/wish.svg"} alt="" />

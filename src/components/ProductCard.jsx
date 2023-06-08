@@ -21,7 +21,7 @@ const ProductCard = ({product}) => {
           <div className="action-bar">
             <img src="/images/prodcompare.svg" alt="" onClick={()=>dispatch(addToCompare(product))}/>
             <img src="/images/view.svg" alt="" onClick={()=>navigate(`/product-page/${product?._id}`)}/>
-            {alreadyAdded?null:<img src="/images/add-cart.svg" alt="" onClick={()=>dispatch(addToCart({productId:product?._id,price:product?.price,qty:1,color:product?.color}))}/>}
+            {product.qty<1?null:alreadyAdded?null:<img src="/images/add-cart.svg" alt="" onClick={()=>dispatch(addToCart({productId:product?._id,price:product?.price,qty:1,color:product?.color}))}/>}
           </div>
           <div className="image">
             <img src={product?.images[0]} alt="" />

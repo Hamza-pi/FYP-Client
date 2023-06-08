@@ -73,7 +73,7 @@ const SpecialProduct = ({product}) => {
           </div>
         </div>
         {
-          product.qty<0?<button className="sp-button">Out of Stock</button>:
+          product.qty<=0?<button className="sp-button">Out of Stock</button>:
           alreadyAdded?
           <button className="sp-button" onClick={()=>navigate("/cart")}>Go To Cart</button>
           :

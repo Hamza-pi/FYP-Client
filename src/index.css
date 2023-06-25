@@ -1743,13 +1743,10 @@ list-style: none;
 }
 .prdct-details-contnainer .policy-container .product-images .main-img{
     border: 1px solid #eaeaea;
-    max-height:500px;
     overflow:hidden;
 }
 .prdct-details-contnainer .policy-container .product-images .main-img img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center center !important;
 }
 .prdct-details-contnainer .policy-container .product-images .sub-images{
@@ -1765,8 +1762,7 @@ list-style: none;
 
 }
 .prdct-details-contnainer .policy-container .product-images .sub-images img{
-    width: 100%;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center center;
 }
 .prdct-details-contnainer .policy-container 

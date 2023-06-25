@@ -8,9 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { SampleNextArrow, SamplePrevArrow } from "../components/SampleArrow";
 import Slider from "react-slick";
 import ProductCard from "../components/ProductCard";
-import { addToWishlist, getAProduct } from "../features/products/productSlice";
+import { addRatings, addToWishlist, getAProduct } from "../features/products/productSlice";
 import useScroll from "../hooks/useScroll"
-import { addToCart } from "../features/auth/authSlice";
+import { addToCart, addToCompare, getOrders } from "../features/auth/authSlice";
+import {useFormik} from "formik"
+import * as Yup from "yup"
 const Product = () => {
 
   useScroll()
@@ -19,18 +21,48 @@ const Product = () => {
   const dispatch = useDispatch()
   const navigate =useNavigate()
 
-  useEffect(()=>{
-    dispatch(getAProduct(id))
-  },[dispatch,id])
+  const [ordered, setOrdered] = useState(false);
+  const [display, setDisplay] = useState(false);
+  const [qty,setQty] = useState(1);
+  const [rating,setRating] = useState(0);
 
   const {aproduct,products} = useSelector((state)=>state.product)
+  const {orders} = useSelector((state)=>state.auth)
+  let isOrdered=orders.find((order)=>order.orderItems.find((item)=>item.product._id===aproduct?._id))
 
   const wishlist = useSelector((state)=>state.product.wishlist.find((item)=>item._id===aproduct?._id))
   const alreadyAdded = useSelector((state)=>state.auth.cart.find((item)=>item.productId._id===aproduct?._id))
   
-  const [ordered, setOrdered] = useState(true);
-  const [display, setDisplay] = useState(false);
-  const [qty,setQty] = useState(1)
+  useEffect(()=>{
+    dispatch(getAProduct(id))
+    if(orders.length===0){
+      dispatch(getOrders())
+    }
+    if(isOrdered!==undefined){
+      setOrdered(true)
+    }
+    else{
+      setOrdered(false)
+    }
+  },[dispatch,isOrdered,orders.length,id,rating])
+
+
+  const formik = useFormik({
+    initialValues:{
+      star:rating,
+      comment:""
+    },
+    onSubmit:(values)=>{
+      console.log(values)
+      dispatch(addRatings({...values,prodId:aproduct._id}))
+    }
+  })
+
+  const newRatings =(rating)=>{
+    setRating(rating)
+    formik.setValues({star:rating})
+  }
+
 
   const settings = {
     dots: false,
@@ -41,6 +73,7 @@ const Product = () => {
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
   };
+
 
   return (
     <>
@@ -54,7 +87,9 @@ const Product = () => {
                   {...{
                     smallImage: {
                       alt: `${aproduct?.title}`,
-                      isFluidWidth: true,
+                      isFluidWidth:false,
+                      width:500,
+                      height:550,
                       src: `${aproduct?.images[0]}`,
                     },
                     largeImage: {
@@ -74,13 +109,15 @@ const Product = () => {
                         {...{
                           smallImage: {
                             alt: `${aproduct?.title}`,
-                            isFluidWidth: true,
+                            isFluidWidth: false,
+                            width:250,
+                            height:200,
                             src: `${img}`
                           },
                           largeImage: {
                             src: `${img}`,
-                            width: 400,
-                            height: 400,
+                            width: 300,
+                            height: 500,
                           },
                           enlargedImagePosition: "over",
                         }}
@@ -138,8 +175,8 @@ const Product = () => {
                   <img src={wishlist?"/images/wish-black.svg":"/images/wish.svg"} alt="" />
                   <p>Add To Wishlist</p>
                 </div>
-                <div>
-                  <img src="/images/prodcompare.svg" alt="" />
+                <div  onClick={()=>dispatch(addToCompare(aproduct))}>
+                  <img src="/images/prodcompare.svg" alt=""/>
                   <p>Compare Product</p>
                 </div>
               </span>
@@ -167,47 +204,42 @@ const Product = () => {
                   />
                   <p>Based on {aproduct?.totalRating} review</p>
                 </span>
-                <p
+                {
+                  ordered?
+                  <p
                   className="write-review"
-                  onClick={() => (ordered ? setDisplay(!display) : null)}
+                  onClick={() => (setDisplay(!display))}
                 >
                   Write a review
-                </p>
+                </p>:null
+                }
               </div>
               <form
+                onSubmit={formik.handleSubmit}
                 className="write-review-form"
                 style={{ display: `${display ? "block" : "none"}` }}
               >
                 <h2>Write A Review</h2>
-                <label htmlFor="name">Name</label>
-                <input type="text" placeholder="Enter Your Name" name="name" />
-                <label htmlFor="email">Email</label>
-                <input
-                  type="text"
-                  placeholder="Enter Your Email"
-                  name="email"
-                />
+                
                 <label>Rating</label>
                 <ReactStars
                   count={5}
+                  onChange={newRatings}
                   size={18}
                   edit={true}
-                  value={0}
                   activeColor="#ffc30e"
+                  value={formik.values.star}
                 />
-                <label htmlFor="title">Review Title</label>
-                <input
-                  type="text"
-                  placeholder="Give your review a title"
-                  name="title"
-                />
-                <label htmlFor="body">Body of review(1500)</label>
+
+                <label htmlFor="body">Body of review</label>
                 <textarea
                   cols={20}
                   rows={10}
                   type="text"
                   placeholder="Write Your Comments Here"
                   name="body"
+                  onChange={formik.handleChange("comment")}
+                  value={formik.values.comment}
                 />
                 <button type="submit" className="slide-btn">
                   Submit Review

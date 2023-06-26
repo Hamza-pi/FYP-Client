@@ -39,7 +39,7 @@ const addRatings = async(data)=>{
 
     const response = await axios.put(`${baseUrl}product/ratings`,data,{headers:{"Authorization":`Bearer ${token}`}})
 
-    console.log(response.data)
+    return response.data
 }
 
 export const productService={

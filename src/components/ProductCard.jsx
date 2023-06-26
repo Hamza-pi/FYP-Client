@@ -37,7 +37,7 @@ const ProductCard = ({product}) => {
                 count={5}
                 size={18}
                 edit={false}
-                value={product?.totalRating}
+                value={product?.totalRatings}
                 activeColor="#ffc30e"
               />
             </div>

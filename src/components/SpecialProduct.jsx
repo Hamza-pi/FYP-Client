@@ -59,7 +59,7 @@ const SpecialProduct = ({product}) => {
             count={5}
             size={16}
             edit={false}
-            value={product?.totalRating}
+            value={product?.totalRatings}
             activeColor="#ffc30e"
           />
         </div>

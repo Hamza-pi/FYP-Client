@@ -12,7 +12,7 @@ import { addRatings, addToWishlist, getAProduct } from "../features/products/pro
 import useScroll from "../hooks/useScroll"
 import { addToCart, addToCompare, getOrders } from "../features/auth/authSlice";
 import {useFormik} from "formik"
-import * as Yup from "yup"
+
 const Product = () => {
 
   useScroll()
@@ -27,6 +27,7 @@ const Product = () => {
   const [rating,setRating] = useState(0);
 
   const {aproduct,products} = useSelector((state)=>state.product)
+
   const {orders} = useSelector((state)=>state.auth)
   let isOrdered=orders.find((order)=>order.orderItems.find((item)=>item.product._id===aproduct?._id))
 
@@ -53,7 +54,6 @@ const Product = () => {
       comment:""
     },
     onSubmit:(values)=>{
-      console.log(values)
       dispatch(addRatings({...values,prodId:aproduct._id}))
     }
   })
@@ -136,10 +136,11 @@ const Product = () => {
                 <ReactStars
                   count={5}
                   edit={false}
-                  value={aproduct?.totalRating}
                   activeColor="#ffc30e"
+                  value={aproduct?.totalRatings}
+
                 />
-                <p>({aproduct?.totalRating} review)</p>
+                <p>({aproduct?.ratings.length} review)</p>
               </span>
               <span className="brand">
                 <h5>
@@ -199,10 +200,10 @@ const Product = () => {
                     count={5}
                     size={18}
                     edit={false}
-                    value={aproduct?.totalRating}
+                    value={aproduct?.totalRatings}
                     activeColor="#ffc30e"
                   />
-                  <p>Based on {aproduct?.totalRating} review</p>
+                  <p>Based on {aproduct?.ratings.length} review</p>
                 </span>
                 {
                   ordered?
@@ -245,19 +246,19 @@ const Product = () => {
                   Submit Review
                 </button>
               </form>
-              <div className="customer-reviews">
-                <h2>Hamza Mukhtar</h2>
-                <ReactStars
-                  count={5}
-                  edit={false}
-                  value={5}
-                  activeColor="#ffc30e"
-                />
-                <p>
-                  <span>HM</span> on <span>Jan 10,2023</span>
-                </p>
-                <p>Very Good Stuff</p>
+              {
+                aproduct?.ratings.map((rating)=>(
+                  <div key={rating?._id} className="customer-reviews">
+                    <ReactStars
+                      count={5}
+                      edit={false}
+                      value={rating.star}
+                      activeColor="#ffc30e"
+                    />
+                    <p>{rating.comment}</p>
               </div>
+                ))
+              }
             </div>
           </div>
         </div>

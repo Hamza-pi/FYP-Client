@@ -1,1 +1,1 @@
-export const baseUrl = "https://digicom-server.up.railway.app/api/"
+export const baseUrl = "https://digicom-server.vercel.app/api/"
